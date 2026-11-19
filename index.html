@@ -1,0 +1,176 @@
+<!doctype html>\n<!-- Standalone BAKAONE map for GitHub Pages. Leaflet tiles and fonts load from the internet. -->
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#123528" />
+  <meta name="description" content="Explore mangrove conservation in Orani, Bataan with BAKAONE." />
+  <title>Orani Mangrove Atlas — BAKAONE</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://server.arcgisonline.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap');
+:root{--forest:#123528;--forest-2:#1d4936;--leaf:#4f8060;--sky:#9bc0df;--paper:#f4f5ef;--ink:#17231c;--muted:#67746a;--line:#dce3d8;--white:#fff;--serif:'Playfair Display',Georgia,serif;--sans:'DM Sans',Arial,sans-serif;--shadow:0 15px 40px #10281e18}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px}a{color:inherit;text-decoration:none}.topbar{height:78px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,6vw,92px)}.brand{font-family:var(--sans);font-weight:700;letter-spacing:-.06em;font-size:21px;color:var(--sky)}.brand span{font-weight:400}.topbar nav{display:flex;align-items:center;gap:38px;font-size:13px;color:#d9e3dc}.topbar nav a{transition:color .2s}.topbar nav a:hover,.topbar nav .nav-active{color:var(--sky)}.nav-home{border:1px solid #688276;border-radius:99px;padding:10px 17px}.menu-button{display:none;background:none;border:0;color:white;font-size:22px}
+main{max-width:1500px;margin:auto}.intro{padding:46px clamp(22px,6vw,92px) 38px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px}.eyebrow{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--leaf);margin:0 0 14px}.intro h1{font:700 clamp(35px,5vw,60px)/1.1 var(--serif);letter-spacing:-.045em;color:var(--forest);margin:0}.intro h1 em{font-weight:600;color:#759bb8}.lede{max-width:630px;line-height:1.7;color:#59675e;margin:17px 0 0}.place-chip{background:#e6eee6;border-radius:4px;padding:13px 17px;display:flex;gap:12px;align-items:center;min-width:210px;margin-bottom:3px}.pin{color:var(--leaf);font-size:23px}.place-chip b,.place-chip small{display:block}.place-chip b{font-size:13px;color:var(--forest)}.place-chip small{font-size:10px;color:var(--muted);margin-top:3px}
+.explorer{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(310px,.72fr);margin:0 clamp(22px,6vw,92px);box-shadow:var(--shadow);min-height:570px;background:white}.map-shell{position:relative;min-height:570px;background:#24372e;overflow:hidden}#map{position:absolute;inset:0;width:100%;height:100%;background:#24372e}.map-topline{position:absolute;z-index:500;top:18px;left:18px;background:#10251dcc;color:white;display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:3px;font-size:9px;letter-spacing:.14em;font-weight:700;pointer-events:none}.live-dot{width:7px;height:7px;border-radius:50%;background:#9dd176;box-shadow:0 0 0 4px #9dd17633}.map-coordinate{padding-left:10px;border-left:1px solid #ffffff44;color:#d2dfd5;font-weight:400;letter-spacing:.04em}.map-controls{position:absolute;z-index:500;right:18px;top:18px;display:flex;flex-direction:column;box-shadow:0 2px 12px #0003}.map-controls button{width:40px;height:40px;border:0;border-bottom:1px solid #dfe4df;background:white;color:var(--forest);font-size:22px;cursor:pointer}.map-controls button:last-child{font-size:17px}.map-controls button:hover{background:#e7f0e8}.legend{position:absolute;z-index:500;bottom:18px;left:18px;background:#fffef8f2;padding:13px 15px 11px;width:215px;border-radius:3px;box-shadow:0 4px 18px #0002}.legend-title{font-weight:700;letter-spacing:.16em;font-size:9px;color:var(--forest);margin:0 0 9px}.legend div{display:flex;align-items:center;gap:9px;font-size:11px;margin:7px 0;color:#3e4c42}.boundary-swatch{width:18px;height:11px;border:2px dashed #639ac4;border-radius:2px}.mangrove-swatch{width:18px;height:11px;background:#75bc5880;border:1px solid #4b8b36;border-radius:2px}.legend small{display:block;font-size:9px;line-height:1.4;color:#758078;margin-top:9px}.map-attribution-note{position:absolute;z-index:500;right:9px;bottom:5px;color:#fff;background:#172a1e99;font-size:9px;padding:3px 6px;pointer-events:none}.map-message{position:absolute;z-index:600;left:50%;top:50%;transform:translate(-50%,-50%);background:#10251de8;color:white;border-radius:4px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-size:12px;max-width:min(85%,390px);text-align:center}.map-message.hidden{display:none}.spinner{width:14px;height:14px;border:2px solid #ffffff55;border-top-color:var(--sky);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.leaflet-control-layers{border:0!important;border-radius:3px!important;box-shadow:0 2px 12px #0003!important;font-family:var(--sans)!important;font-size:12px!important}.leaflet-control-layers-toggle{width:40px!important;height:40px!important;background-size:20px!important}.leaflet-control-attribution{font-size:9px!important}
+.data-panel{padding:30px 29px 23px;display:flex;flex-direction:column}.panel-head{display:flex;justify-content:space-between;align-items:center}.panel-head .eyebrow{margin-bottom:8px}.panel-head h2{font:700 25px/1.15 var(--serif);color:var(--forest);margin:0}.leaf-mark{font-size:24px;color:var(--leaf);opacity:.8}.panel-intro{font-size:12px;line-height:1.6;color:var(--muted);margin:16px 0 18px}.summary{background:var(--forest);color:white;padding:17px 18px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 10px}.summary span{font-size:12px;color:#d3dfd4}.summary b{font:600 17px var(--serif);color:var(--sky);text-align:right}.summary small{grid-column:1/-1;color:#afc1b1;font-size:9px}.barangay-heading,.barangays li{display:flex;justify-content:space-between;align-items:center}.barangay-heading{font-size:9px;font-weight:700;letter-spacing:.15em;color:#88948a;padding:20px 2px 8px;border-bottom:1px solid var(--line)}.barangays{padding:0;margin:0;list-style:none}.barangays li{padding:12px 2px;border-bottom:1px solid #e9ede7;font-size:12px}.barangays li b{color:#91a094;font-weight:500}.data-note{display:flex;gap:9px;background:#f0f5ef;padding:12px;margin-top:auto}.data-note span{font:700 12px var(--serif);width:17px;height:17px;text-align:center;border:1px solid #9ab49e;border-radius:50%;color:var(--leaf);flex:none}.data-note p{font-size:10px;line-height:1.5;color:#627166;margin:0}.below{margin:0 clamp(22px,6vw,92px);padding:56px 0;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center;border-bottom:1px solid var(--line)}.below h2{font:700 clamp(25px,3.4vw,40px)/1.15 var(--serif);color:var(--forest);margin:0;max-width:460px}.below>p{max-width:510px;font-size:14px;line-height:1.8;color:#66736a;margin:0}footer{background:var(--forest);color:#c5d1c6;padding:26px clamp(22px,6vw,92px);display:flex;align-items:center;justify-content:space-between;font-size:11px}footer .brand{font-size:17px}footer>a:last-child{color:var(--sky)}
+@media(max-width:940px){.explorer{grid-template-columns:minmax(0,1fr) 320px}.data-panel{padding:25px 22px}.map-shell,#map{min-height:580px}.intro{align-items:flex-start}.place-chip{min-width:185px}}
+@media(max-width:720px){.topbar{height:66px}.topbar nav{display:none;position:absolute;top:66px;left:0;right:0;background:var(--forest);z-index:900;flex-direction:column;align-items:stretch;gap:0;padding:8px 22px 18px}.topbar nav.open{display:flex}.topbar nav a{padding:13px 4px;border-bottom:1px solid #ffffff20}.topbar nav .nav-home{border:0;border-bottom:1px solid #ffffff20;border-radius:0}.menu-button{display:block}.intro{display:block;padding-top:34px;padding-bottom:27px}.intro h1{font-size:clamp(35px,9vw,48px)}.place-chip{margin-top:22px;width:max-content}.explorer{display:flex;flex-direction:column;margin:0 14px}.map-shell,#map{min-height:56vh;max-height:620px}.data-panel{padding:25px 21px;min-height:490px}.legend{bottom:13px;left:13px}.map-controls{top:auto;bottom:18px;right:13px}.below{grid-template-columns:1fr;gap:18px;padding:39px 8px;margin:0 22px}.below>p{font-size:13px}footer{gap:12px;flex-wrap:wrap}footer>span{order:3;width:100%}}
+@media(max-width:380px){.map-topline{left:10px;top:10px;padding:8px;font-size:8px}.map-coordinate{display:none}.legend{width:190px}.map-shell,#map{min-height:480px}.intro{padding-left:18px;padding-right:18px}.explorer{margin:0 9px}}
+.center-swatch{width:11px;height:11px;border-radius:50%;background:var(--sky);border:2px solid var(--forest);margin:0 3px}.center-label{display:block;margin:3px 0 0;color:#84958b;font-size:9px}.data-note a{color:var(--forest);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.mangrove-swatch{width:11px;height:11px;border-radius:50%;background:#75bc58;border:2px solid #315d32;margin:0 3px}
+
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" id="home-link" aria-label="BAKAONE home">BAKA<span>ONE</span></a>
+    <nav aria-label="Main navigation"><a class="nav-active" href="#explore">Explore</a><a href="#about">About the map</a><a class="nav-home" id="nav-home-link" href="#">Home ↗</a></nav>
+    <button class="menu-button" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+  </header>
+
+  <main id="explore">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-copy"><p class="eyebrow">BAKAONE · COASTAL ATLAS</p><h1 id="page-title">Every root matters.<br/><em>Every coast counts.</em></h1><p class="lede">Explore the mangrove coast of Orani, Bataan. A living map for understanding and protecting the places that shelter our shores.</p></div>
+      <div class="place-chip"><span class="pin">⌖</span><span><b>Orani, Bataan</b><small>Central Luzon · Philippines</small></span></div>
+    </section>
+
+    <section class="explorer" aria-label="Interactive map and mangrove information">
+      <div class="map-shell">
+        <div id="map" role="application" aria-label="Interactive satellite map centered on Orani, Bataan"></div>
+        <div class="map-topline"><span class="live-dot"></span><span>FIELD VIEW</span><span class="map-coordinate">14.80° N · 120.54° E</span></div>
+        <div class="map-message" id="map-message" role="status"><span class="spinner"></span><span>Loading satellite imagery…</span></div>
+        <div class="map-controls"><button id="zoom-in" aria-label="Zoom in">＋</button><button id="zoom-out" aria-label="Zoom out">−</button><button id="reset-view" aria-label="Reset map view">⌖</button></div>
+        <div class="legend"><p class="legend-title">MAP KEY</p><div><i class="boundary-swatch"></i><span>Orani municipal outline</span></div><div><i class="center-swatch"></i><span>Approx. barangay center</span></div><div><i class="mangrove-swatch"></i><span>Mangrove inventory station</span></div><small>Green points show report station coordinates. Reported area values are not drawn as polygon footprints.</small></div>
+        <div class="map-attribution-note">Imagery © Esri · Boundary © NAMRIA/PSA via OCHA</div>
+      </div>
+      <aside class="data-panel">
+        <div class="panel-head"><div><p class="eyebrow">MANGROVE INVENTORY · 2020</p><h2>Reported survey sites</h2></div><span class="leaf-mark">✳</span></div>
+        <p class="panel-intro">Table 37 lists station coordinates and area values for these Northeast Bataan sites. Green map points are the report coordinates; no site boundary polygons are provided.</p>
+        <div class="summary"><span>Listed Orani stations · sum</span><b id="total-area">0.4373 km²</b><small>Calculated from five report rows; not a comprehensive municipal total.</small></div>
+        <div class="barangay-heading"><span>REPORT STATION</span><span>AREA (KM²)</span></div>
+        <ul id="barangay-list" class="barangays"></ul>
+        <div class="data-note"><span>i</span><p>Blue markers are approximate barangay centers, not mangrove locations or boundaries. <a href="https://www.philatlas.com/luzon/r03/bataan/orani/" target="_blank" rel="noreferrer">Center source: PhilAtlas ↗</a><br/><a href="https://pemsea.org/sites/default/files/2024-07/Second%20Bataan%20SOC%202024.pdf" target="_blank" rel="noreferrer">Inventory source: PEMSEA Table 37 ↗</a></p></div>
+      </aside>
+    </section>
+
+    <section class="below" id="about"><div><p class="eyebrow">A MAP IN PROGRESS</p><h2>Good stewardship starts with good coordinates.</h2></div><p>Orani’s mangroves protect shorelines and support coastal life. This atlas is ready for verified municipal boundaries and mangrove survey data, so each highlight can point to a real place.</p></section>
+  </main>
+  <footer><a class="brand" href="#">BAKA<span>ONE</span></a><span>Every Root Matters, Every Coast Counts.</span><a href="#explore">Back to map ↑</a></footer>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+// Standalone GitHub Pages data. Keep src/app.js and data/mangroves.js as editable source copies.
+const siteConfig = { brand: 'BAKAONE', homeUrl: '#', colors: { forest: '#123528', leaf: '#4f8060', sky: '#9bc0df', paper: '#f4f5ef' }, mapCenter: [14.80, 120.54], mapZoom: 12 };
+const inventory = { barangays: [
+  { name: 'Tapulao', center: [14.8131, 120.5208] },
+  { name: 'Kabalutan', center: [14.8166, 120.5369] },
+  { name: 'Pantalan Luma', center: [14.8013, 120.5417] },
+  { name: 'Pantalan Bago', center: [14.8033, 120.5412] },
+  { name: 'Kaparangan', center: [14.7926, 120.5396] }
+]};
+const mangroveStations = [
+  { name: 'Tubo-tubo Island', latitude: 14.8134, longitude: 120.5576, areaKm2: 0.0789, setting: 'Coastal', species: 'S. alba' },
+  { name: 'Kabalutan 1', latitude: 14.8127, longitude: 120.5515, areaKm2: 0.1013, setting: 'Riverine', species: 'R. mucronata' },
+  { name: 'Kabalutan 2', latitude: 14.8146, longitude: 120.5461, areaKm2: 0.0775, setting: 'Riverine', species: 'S. alba' },
+  { name: 'Kabalutan 3', latitude: 14.8091, longitude: 120.5424, areaKm2: 0.0827, setting: 'Riverine', species: 'S. caseolaris' },
+  { name: 'Kaparangan', latitude: 14.7915, longitude: 120.5485, areaKm2: 0.0969, setting: 'Riverine', species: 'S. alba' }
+];
+const reportedOraniStationsAreaKm2 = 0.4373;
+const oraniBoundary = {"type":"FeatureCollection","features":[{"type":"Feature","geometry":{"type":"Polygon","coordinates":[[[120.547230279,14.786174901000035],[120.54954030000012,14.822315404000049],[120.52996468200003,14.832459915000069],[120.50365496800009,14.812110385000043],[120.45404258500002,14.806266291000043],[120.430288528,14.762044054000059],[120.39561471300011,14.744547584000028],[120.42257137600006,14.743429041000073],[120.44484715700004,14.753264496000044],[120.484387534,14.784157906000077],[120.547230279,14.786174901000035]]]},"properties":{"adm1_psgc":300000000,"adm2_psgc":300800000,"adm3_psgc":300809000,"adm3_en":"Orani","geo_level":"Mun","len_crs":66771,"area_crs":53713890,"len_km":66,"area_km2":53},"id":300809000}]};
+const mangroveFeatures = null;
+
+
+const map = L.map('map', { zoomControl: false, scrollWheelZoom: true }).setView(siteConfig.mapCenter, siteConfig.mapZoom);
+const imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  maxZoom: 19, attribution: 'Tiles © Esri — Sources: Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+});
+const fallback = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19, attribution: '© OpenStreetMap contributors'
+});
+let failedTiles = 0;
+imagery.on('tileerror', () => { failedTiles += 1; if (failedTiles >= 3 && !map.hasLayer(fallback)) { map.addLayer(fallback); showMessage('Satellite imagery is unavailable. Showing the street map instead.', true); } });
+imagery.on('load', () => { if (failedTiles < 3) showMessage('', false); });
+imagery.addTo(map);
+
+const boundaryStyle = { color: '#a9cce7', weight: 2.5, opacity: 0.95, fillColor: '#9bc0df', fillOpacity: 0.08, dashArray: '7 5' };
+const mangroveStyle = { color: '#b7e28b', weight: 2, fillColor: '#75bc58', fillOpacity: 0.52 };
+const boundaryLayer = L.geoJSON(oraniBoundary || null, { style: boundaryStyle });
+const mangroveLayer = mangroveFeatures ? L.geoJSON(mangroveFeatures, {
+  style: mangroveStyle,
+  onEachFeature: (feature, layer) => {
+    const p = feature.properties || {};
+    layer.bindPopup(`<strong>${escapeHtml(p.name || 'Mangrove area')}</strong><br/>${escapeHtml(p.areaLabel || 'Area information unavailable')}`);
+  }
+}) : L.layerGroup();
+const barangayCenterLayer = L.layerGroup(inventory.barangays.filter(item => item.center).map(item => {
+  const [lat, lng] = item.center;
+  return L.circleMarker([lat, lng], {
+    radius: 7, color: '#173d32', weight: 2, fillColor: '#9bc0df', fillOpacity: 1,
+    title: `${item.name} approximate barangay center`
+  })
+    .bindTooltip(escapeHtml(item.name))
+    .bindPopup(`<strong>${escapeHtml(item.name)}</strong><br/>Approximate barangay center<br/>${lat.toFixed(4)}° N, ${lng.toFixed(4)}° E<br/><small>Not a mangrove location or barangay boundary.</small>`);
+}));
+const mangroveStationLayer = L.layerGroup(mangroveStations.map(station => L.circleMarker(
+  [station.latitude, station.longitude],
+  { radius: 8, color: '#173d32', weight: 2, fillColor: '#75bc58', fillOpacity: 1, title: `${station.name} mangrove inventory station` }
+)
+  .bindTooltip(escapeHtml(station.name))
+  .bindPopup(`<strong>${escapeHtml(station.name)}</strong><br/>Reported area: ${station.areaKm2} km²<br/>${escapeHtml(station.setting)} · ${escapeHtml(station.species)}<br/><small>Reported inventory station coordinate; no site boundary geometry provided.</small>`)));
+boundaryLayer.addTo(map);
+barangayCenterLayer.addTo(map);
+mangroveStationLayer.addTo(map);
+if (mangroveFeatures) mangroveLayer.addTo(map);
+
+// The municipal outline is embedded here so this page works when GitHub contains only index.html.
+const boundaryBounds = boundaryLayer.getBounds();
+if (boundaryBounds.isValid()) {
+  mangroveStations.forEach(({ latitude, longitude }) => boundaryBounds.extend([latitude, longitude]));
+  map.fitBounds(boundaryBounds.pad(0.12), { maxZoom: siteConfig.mapZoom });
+}
+document.querySelector('.legend small').textContent = 'Green points are report stations; they are not mangrove polygon boundaries.';
+showMessage('', false);
+
+// Simple, independent toggles: satellite imagery and verified mangrove features.
+const overlayLayers = {
+  'Orani boundary': boundaryLayer,
+  'Approx. barangay centers': barangayCenterLayer,
+  'Mangrove inventory stations (points)': mangroveStationLayer
+};
+if (mangroveFeatures) overlayLayers['Verified mangrove polygons'] = mangroveLayer;
+L.control.layers({ 'Satellite imagery': imagery, 'Street map': fallback }, overlayLayers, { collapsed: true }).addTo(map);
+
+for (const [id, fn] of [['zoom-in', () => map.zoomIn()], ['zoom-out', () => map.zoomOut()], ['reset-view', () => map.setView(siteConfig.mapCenter, siteConfig.mapZoom)]]) document.getElementById(id).addEventListener('click', fn);
+
+function showMessage(message, visible = true) {
+  const el = document.getElementById('map-message');
+  el.classList.toggle('hidden', !visible || !message);
+  el.innerHTML = message ? `<span>${escapeHtml(message)}</span>` : '';
+}
+function escapeHtml(value) { return String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]); }
+
+const list = document.getElementById('barangay-list');
+for (const item of mangroveStations) {
+  const li = document.createElement('li');
+  li.innerHTML = `<span>${escapeHtml(item.name)}</span><b>${item.areaKm2} km²</b>`;
+  list.append(li);
+}
+document.getElementById('total-area').textContent = `${reportedOraniStationsAreaKm2.toFixed(4)} km²`;
+for (const id of ['home-link', 'nav-home-link']) document.getElementById(id).href = siteConfig.homeUrl;
+
+map.whenReady(() => { setTimeout(() => { if (document.getElementById('map-message').classList.contains('hidden')) return; showMessage('Loading satellite imagery…'); }, 1200); });
+setTimeout(() => { if (document.getElementById('map-message').textContent.includes('Loading')) showMessage('Imagery may be slow or blocked. Try the layer menu or refresh when connected.', true); }, 10000);
+
+const menuButton = document.querySelector('.menu-button');
+menuButton.addEventListener('click', () => {
+  const nav = document.querySelector('.topbar nav');
+  const expanded = menuButton.getAttribute('aria-expanded') === 'true';
+  menuButton.setAttribute('aria-expanded', String(!expanded));
+  nav.classList.toggle('open', !expanded);
+});
+
+</script>
+</body>
+</html>
